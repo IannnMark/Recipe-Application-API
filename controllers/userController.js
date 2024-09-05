@@ -1,6 +1,7 @@
 const bcryptjs = require("bcryptjs");
 const User = require("../models/user");
 const errorHandler = require("../utils/error");
+const Recipe = require("../models/Recipe");
 
 exports.updateUser = async (req, res, next) => {
     if (req.user.id !== req.params.id) return next(errorHandler(401, "You can only update your own account"))
@@ -33,5 +34,18 @@ exports.deleteUser = async (req, res, next) => {
         res.status(200).json("User has been deleted")
     } catch (error) {
         next(error);
+    }
+}
+
+exports.getUserRecipe = async (req, res, next) => {
+    if (req.user.id === req.params.id) {
+        try {
+            const recipe = await Recipe.find({ userRef: req.params.id });
+            res.status(200).json(recipe);
+        } catch (error) {
+            next(error);
+        }
+    } else {
+        return next(errorHandler(401, "You can only view your own listings!"));
     }
 }
