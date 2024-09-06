@@ -22,3 +22,22 @@ exports.getRecipe = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.deleteRecipe = async (req, res, next) => {
+    const recipe = await Recipe.findById(req.params.id);
+
+    if (!recipe) {
+        return next(errorHandler(404, "Recipe not found!"));
+    }
+
+    if (req.user.id !== recipe.userRef) {
+        return next(errorHandler(401, "You can only delete your own recipe"));
+    }
+
+    try {
+        await Recipe.findByIdAndDelete(req.params.id);
+        res.status(200).json("Recipe has been deleted");
+    } catch (error) {
+        next(error);
+    }
+}
