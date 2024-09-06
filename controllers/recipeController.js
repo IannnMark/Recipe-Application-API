@@ -41,3 +41,23 @@ exports.deleteRecipe = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.updateRecipe = async (req, res, next) => {
+    const recipe = await Recipe.findById(req.params.id);
+
+    if (!recipe) {
+        return next(errorHandler(404, "Recipe not found"));
+
+    }
+
+    try {
+        const updateRecipe = await Recipe.findByIdAndUpdate(
+            req.params.id,  // The ID of the recipe to update
+            req.body,       // The new data for the recipe
+            { new: true }   // Return the updated recipe, not the old one
+        );
+        res.status(200).json(updateRecipe);    // Send the updated recipe back as the response
+    } catch (error) {
+        next(error);
+    }
+}
