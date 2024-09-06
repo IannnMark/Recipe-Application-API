@@ -61,3 +61,28 @@ exports.updateRecipe = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.getRecipes = async (req, res, next) => {
+    try {
+        const limit = parseInt(req.query.limit) || 9;
+        const startIndex = parseInt(req.query.startIndex) || 0;
+
+        const searchTerm = req.body.searchTerm || "";
+
+        const sort = req.body.sort || "createdAt";
+
+        const order = req.body.order || "desc";
+
+        const recipes = await Recipe.find({
+            title: { $regex: searchTerm, $options: 'i' },
+            ingredients: { $regex: searchTerm, $options: 'i' },
+        }).sort(
+            { [sort]: order }
+        ).limit(limit).skip(startIndex);
+
+        return res.status(200).json(recipes);
+
+    } catch (error) {
+        next(error);
+    }
+}
