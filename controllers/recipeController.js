@@ -62,6 +62,8 @@ exports.updateRecipe = async (req, res, next) => {
     }
 }
 
+
+//search controller
 exports.getRecipes = async (req, res, next) => {
     try {
         const limit = parseInt(req.query.limit) || 9;
