@@ -6,7 +6,7 @@ const { createRecipe, getRecipe, deleteRecipe, updateRecipe } = require("../cont
 router.post("/create", verifyToken, createRecipe);
 router.get("/get/:id", getRecipe);
 router.delete("/delete/:id", verifyToken, deleteRecipe);
-// router.put("/update/:id", verifyToken, updateRecipe);
+router.put("/update/:id", verifyToken, updateRecipe);
 
 
 module.exports = router;
