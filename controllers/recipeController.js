@@ -69,7 +69,8 @@ exports.getRecipes = async (req, res, next) => {
         const limit = parseInt(req.query.limit) || 9;
         const startIndex = parseInt(req.query.startIndex) || 0;
 
-        const searchTerm = req.body.searchTerm || "";
+        const searchTerm = req.body.searchTerm || '';
+        console.log('Search Term:', searchTerm);
 
         const sort = req.body.sort || "createdAt";
 
